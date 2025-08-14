@@ -5,6 +5,9 @@ Overlay based upon vc4-kms-dsi-7inch-overlay from the RPi kernel but modified fo
 How to install:
 
 sudo -i
+
+wget https://github.com/pipbug/rpi-dsi-generic-pwm/blob/main/rpi-dsi-generic-pwm.dts
+
 dtc -@ -I dts -O dtb -o rpi-dsi-generic-pwm.dtbo rpi-dsi-generic-pwm.dts
 
 cp rpi-dsi-generic-pwm.dtbo /boot/firmware/overlays/rpi-dsi-generic-pwm.dtbo
