@@ -6,8 +6,11 @@ How to install:
 
 sudo -i
 dtc -@ -I dts -O dtb -o rpi-dsi-generic-pwm.dtbo rpi-dsi-generic-pwm.dts
+
 cp rpi-dsi-generic-pwm.dtbo /boot/firmware/overlays/rpi-dsi-generic-pwm.dtbo
+
 echo "dtoverlay=rpi-dsi-generic-pwm" >> /boot/firmware/config.txt
+
 reboot
 
 https://github.com/pipbug/rpi-dsi-generic-pwm
