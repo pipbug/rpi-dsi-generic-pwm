@@ -1,0 +1,155 @@
+/* https://github.com/pipbug/rpi-dsi-generic-pwm */
+/dts-v1/;
+/plugin/;
+
+/ {
+	compatible = "brcm,bcm2711,bcm2835";
+
+	fragment@0 {
+		target = <&dsi1>;
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+			
+			port {
+				dsi_out: endpoint {
+					remote-endpoint = <&bridge_in>;
+				};
+			};
+			
+			bridge@0 {
+				reg = <0>;
+				compatible = "toshiba,tc358762";
+				vddc-supply = <&reg_bridge>;
+				
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					
+					port@0 {
+						reg = <0>;
+						bridge_in: endpoint {
+							remote-endpoint = <&dsi_out>;
+						};
+					};
+					
+					port@1 {
+						reg = <1>;
+						bridge_out: endpoint {
+							remote-endpoint = <&panel_in>;
+						};
+					};
+				};
+			};
+		};
+	};
+
+	fragment@1 {
+		target-path = "/";
+		__overlay__ {
+			panel_disp: panel-disp {
+				compatible = "raspberrypi,7inch-dsi", "simple-panel";
+				backlight = <&backlight_pwm>;
+				power-supply = <&reg_display>;
+				
+				port {
+					panel_in: endpoint {
+						remote-endpoint = <&bridge_out>;
+					};
+				};
+			};
+
+			reg_bridge: reg-bridge {
+				compatible = "regulator-fixed";
+				regulator-name = "bridge_reg";
+				gpio = <&reg_display 0 0>;
+				vin-supply = <&reg_display>;
+				enable-active-high;
+			};
+
+			/* PWM Backlight configuration */
+			backlight_pwm: backlight {
+				compatible = "pwm-backlight";
+				pwms = <&pwm 0 1000000 0>;  /* PWM0, 1ms period (1kHz), normal polarity */
+				brightness-levels = <0 10 20 30 50 70 100 130 170 210 255>; /* Rough gamma 2.2 curve */
+				num-interpolated-steps = <256>;
+				default-brightness-level = <9>;  /* Default to ~80% brightness */
+				status = "okay";
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <&i2c_csi_dsi>;
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+
+			reg_display: reg_display@45 {
+				compatible = "raspberrypi,7inch-touchscreen-panel-regulator";
+				reg = <0x45>;
+				gpio-controller;
+				#gpio-cells = <2>;
+			};
+		};
+	};
+
+	fragment@3 {
+		target = <&i2c_csi_dsi>;
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+
+			ft5406: touchscreen@38 {
+				compatible = "edt,edt-ft5406";
+				reg = <0x38>;
+				touchscreen-size-x = <800>;
+				touchscreen-size-y = <480>;
+				touchscreen-inverted-x; /* Comment this out if your X axis should NOT be inverted */
+				touchscreen-inverted-y; /* Comment this out if your Y axis should NOT be inverted */
+				/* touchscreen-swapped-x-y; Uncomment this line if your X and Y axes should be swapped */
+				vcc-supply = <&reg_display>;
+				reset-gpios = <&reg_display 1 0>;
+				status = "okay";
+			};
+		};
+	};
+
+	fragment@4 {
+		target = <&i2c0if>;
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@5 {
+		target = <&i2c0mux>;
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	/* Enable PWM controller */
+	fragment@6 {
+		target = <&pwm>;
+		__overlay__ {
+			status = "okay";
+			pinctrl-names = "default";
+			pinctrl-0 = <&pwm0_gpio18>;
+		};
+	};
+
+	/* Configure GPIO18 for PWM0 */
+	fragment@7 {
+		target = <&gpio>;
+		__overlay__ {
+			pwm0_gpio18: pwm0_gpio18 {
+				brcm,pins = <18>;
+				brcm,function = <2>;  /* ALT5 = PWM0 */
+			};
+		};
+	};
+};
