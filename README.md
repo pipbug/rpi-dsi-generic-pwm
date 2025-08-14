@@ -1,6 +1,3 @@
-Got it — here’s the **entire README** in one clean markdown file, with all the sections (including *Confirmed Working Displays*, *License*, and *Notes*) fully integrated.
-
-````markdown
 # 📟 rpi-dsi-generic-pwm
 
 **A Raspberry Pi Device Tree Overlay for generic DSI displays** that are similar to the official RPi 7" display, but require a **separate PWM signal** from the GPIO header for backlight control.
@@ -45,7 +42,7 @@ echo "dtparam=audio=off" >> /boot/firmware/config.txt
 
 # 6. Reboot
 reboot
-````
+```
 
 ---
 
@@ -53,7 +50,8 @@ reboot
 
 * **ALLNET China 5-inch DSI LCD MIPI Display (capacitive touch, 800×480)**
   [🔗 Product page](https://shop.allnetchina.cn/products/5inch-dsi-lcd-mipi-display-with-capacitive-touch-screen)
-* Contribute to this project by testing your display and let everyone know how it works!
+
+  _Contribute to this project by testing your display and let everyone know how it works!_
 
 ---
 
