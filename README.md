@@ -1,3 +1,6 @@
+Got it — here’s the **entire README** in one clean markdown file, with all the sections (including *Confirmed Working Displays*, *License*, and *Notes*) fully integrated.
+
+````markdown
 # 📟 rpi-dsi-generic-pwm
 
 **A Raspberry Pi Device Tree Overlay for generic DSI displays** that are similar to the official RPi 7" display, but require a **separate PWM signal** from the GPIO header for backlight control.
@@ -42,3 +45,26 @@ echo "dtparam=audio=off" >> /boot/firmware/config.txt
 
 # 6. Reboot
 reboot
+````
+
+---
+
+## ✅ Confirmed Working Displays
+
+* **ALLNET China 5-inch DSI LCD MIPI Display (capacitive touch, 800×480)**
+  [🔗 Product page](https://shop.allnetchina.cn/products/5inch-dsi-lcd-mipi-display-with-capacitive-touch-screen)
+* Contribute to this project by testing your display and let everyone know how it works!
+
+---
+
+## 📜 License
+
+This project is licensed under the [Raspberry Pi Linux license](https://github.com/raspberrypi/linux/blob/rpi-6.12.y/COPYING).
+
+---
+
+## 💡 Notes
+
+* If PWM audio is enabled, it will block usage of PWM0. Disable it before using this overlay.
+* Tested on Raspberry Pi OS Bookworm with kernel 6.12.
+* This overlay was tested with displays electrically similar to the official Raspberry Pi 7" display but requiring an external PWM input for backlight brightness.
