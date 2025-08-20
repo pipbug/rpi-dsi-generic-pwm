@@ -12,8 +12,7 @@ This overlay is based on [`vc4-kms-dsi-7inch-overlay`](https://github.com/raspbe
 
 
 ## Requirements
-- GPIO18 (physical pin 12) free for PWM output  
-  _(Ensure **PWM0** is not in use — e.g. disable PWM audio.)_
+- Hardware PWM (GPIO18) available for output (disable PWM audio.)
 - DSI display with PWM pin available. [Some models require you to move a 0-ohm resistor before connecting the PWM wire to the corresponding pad.](https://i.imgur.com/he4CV9k.jpeg)
 
 ## Installation
